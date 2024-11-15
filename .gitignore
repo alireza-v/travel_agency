@@ -1,0 +1,24 @@
+# virtual environment
+env
+venv
+
+# environment variable
+.env
+
+# database migration
+*/migrations
+
+# python bytecode files
+__pycache/
+*.py[cod]
+
+# django-specifig ignores
+*.log
+*.pot
+*.pyc
+db.sqlite3
+/static/
+media/
+
+# others
+Makefile
