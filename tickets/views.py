@@ -1,6 +1,6 @@
-from django.db.models import Q
+from django.db.models import F, Q
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema
 
@@ -14,7 +14,7 @@ from .serializers import *
 
 
 @extend_schema(
-    summary="Display the available tours",
+    summary="Available tours",
     description="Display the available tours",
     tags=["Tours"],
     responses={200: TourSer},
@@ -50,8 +50,8 @@ class TourList(generics.ListAPIView):
 
 
 @extend_schema(
-    summary="Retrieve Tour instance through the slug field",
-    description="Retrieve Tour instance through the slug field",
+    summary="Tour detail",
+    description="Retrieve the tour instance using the slug field",
     tags=["Tours"],
     responses={
         200: TourSer,
@@ -67,45 +67,60 @@ class TourList(generics.ListAPIView):
     ],
 )
 class TourRetrieve(generics.RetrieveAPIView):
-    permission_classes = [permissions.AllowAny]
-    queryset = Tour.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = TourSer
 
     def get_object(self):
         slug = self.kwargs.get("slug")
-
-        try:
-            return Tour.objects.get(slug=slug)
-        except Tour.DoesNotExist:
-            raise Http404("Tour not found")
+        return get_object_or_404(Tour, slug=slug)
 
 
-class TourTicketListCreateView(generics.ListCreateAPIView):
-    """Display and Create ticket for the available tours"""
+@extend_schema(
+    summary="Old tours",
+    description="Display history of deleted tours",
+    responses={
+        200: TourHistSer(many=True),
+    },
+)
+class TourHistoryView(generics.ListAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = TourHistSer
+
+    def get_queryset(self):
+        queryset = (
+            Tour.history.filter(history_type="-")
+            .annotate(
+                deleted_by=F("history_user__email"),
+            )
+            .order_by("-history_date")
+        )
+        return queryset
+
+
+class TourTicketListCreate(generics.ListCreateAPIView):
+    """Display and Create tour ticket"""
 
     permission_classes = [permissions.IsAuthenticated]
     queryset = TourTicket.objects.all().order_by("-timestamp")
     serializer_class = TourTicketSer
 
     @extend_schema(
-        summary="Display user bought tickets",
-        description="Display bought tickets",
+        summary="Tour tickets",
+        description="Display bought tour tickets",
         responses={
             200: TourTicketSer(many=True),
         },
-        parameters=[],
     )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Buy ticket from the available tours",
+        summary="Buy ticket",
         description="Buy ticket from the available tours",
         request=TourTicketSer,
         responses={
             201: TourTicketSer,
         },
-        parameters=[],
     )
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)

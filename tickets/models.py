@@ -7,8 +7,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
+from simple_history.models import HistoricalRecords
 
-# Create your models here.
 from users.models import *
 
 
@@ -20,8 +20,6 @@ class CityChoices(models.IntegerChoices):
 
 
 class Tour(BaseModel):
-    """Tour model for available tours"""
-
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="tours")
     image = models.ImageField(upload_to="images/", null=True)
     info = models.TextField(default="Describe tour features", null=True, unique=True)
@@ -35,6 +33,7 @@ class Tour(BaseModel):
         max_digits=13, decimal_places=3, default=12000000, null=True
     )
     slug = models.SlugField(unique=True, blank=True, null=True)
+    history = HistoricalRecords()
 
     def clean(self):
         """Validate the image file format"""
@@ -47,43 +46,42 @@ class Tour(BaseModel):
         return f"{self.get_origin_display()}-> {self.get_destination_display()}"
 
     def duration(self):
-        """Calculate difference between start_date and end_date"""
+        """Total time to be spent for a tour"""
         if self.start_date and self.end_date:
             difference = self.end_date - self.start_date
             return f"{difference.days} nights"
         return None
 
     def save(self, *args, **kwargs):
+        """Slug: info field be used as a slug"""
         if not self.slug:
             self.slug = slugify(self.info)
         super().save(*args, **kwargs)
 
 
 class TourTicket(BaseModel):
-    number = models.AutoField(primary_key=True)
-    tour = models.OneToOneField(Tour, on_delete=models.CASCADE)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    tour = models.OneToOneField(
+        Tour, on_delete=models.CASCADE, related_name="tourTickets"
+    )
 
     def __str__(self):
-        return self.tour.get_location_display()
+        return self.tour.get_origin_display()
 
 
-# class Plane(BaseModel):
-#     """Plane model for reserving plane trip"""
+class Plane(BaseModel):
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="planes")
+    origin = models.IntegerField(choices=CityChoices.choices)
+    destination = models.IntegerField(choices=CityChoices.choices)
 
-#     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="planes")
-#     origin = models.IntegerField(choices=CityChoices.choices)
-#     destination = models.IntegerField(choices=CityChoices.choices)
-
-#     def __str__(self):
-#         return f"{self.origin}-> {self.destination}"
+    def __str__(self):
+        return f"{self.origin}-> {self.destination}"
 
 
-# class Hotel(BaseModel):
-#     """Hotel model reserving hotel using start and end date"""
+class Hotel(BaseModel):
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="hotels")
+    enter = models.DateTimeField()
+    exit = models.DateTimeField()
 
-#     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="hotels")
-#     enter = models.DateTimeField()
-#     exit = models.DateTimeField()
-
-#     def __str__(self):
-#         return f"{self.enter}-> {self.exit}"
+    def __str__(self):
+        return f"{self.enter}-> {self.exit}"

@@ -45,20 +45,18 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # 3rd party
+    # third party
     "rest_framework",
-    "rest_framework_simplejwt",
+    "djoser",
+    # "restframework_simplejwt",
     "pytest_django",
-    "phonenumber_field",
     "django_jalali",
     "drf_spectacular",
-    # django apps
+    "simple_history",
+    # internal apps
     "users",
     "tickets",
 ]
-
-X_FRAME_OPTIONS = "SAMEORIGIN"
-SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 AUTH_USER_MODEL = "users.Profile"
 
@@ -69,9 +67,17 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
+DJOSER = {
+    "LOGIN_FIELD": "email",
+    "PASSWORD_RESET_CONFIRM_URL": "auth/password/reset/confirm/{uid}/{token}/",
+    "ACTIVATION_URL": "activate/{uid}/{token}/",
+    "SEND_ACTIVATION_EMAIL": True,
+}
+
+
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(weeks=1), # For testing purpose
-    "REFRESH_TOKEN_LIFETIME": timedelta(weeks=2), # For testing purpose
+    "ACCESS_TOKEN_LIFETIME": timedelta(weeks=1),  # For testing purposes
+    "REFRESH_TOKEN_LIFETIME": timedelta(weeks=2),  # For testing purposes
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
 }
@@ -98,6 +104,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # simple-history
+    "simple_history.middleware.HistoryRequestMiddleware",
 ]
 
 ROOT_URLCONF = "src.urls"
@@ -124,12 +132,6 @@ WSGI_APPLICATION = "src.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
 
 DATABASES = {
     "default": {
@@ -191,22 +193,3 @@ EMAIL_PORT = "587"
 EMAIL_HOST_USER = config("email_host_user")
 EMAIL_HOST_PASSWORD = config("email_host_password")
 EMAIL_USE_TLS = True
-
-
-# LOGGING={
-#     "version":1,
-#     "disable_existing_loggers":False,
-#     "handlers":{
-#         "console":{
-#             "level":"DEBUG",
-#             "class":"logging.StreamHandler",
-#         },
-#     },
-#     "loggers":{
-#         "django":{
-#             "handlers":["console"],
-#             "level":"DEBUG",
-#             "propagate":True,
-#         },
-#     },
-# }

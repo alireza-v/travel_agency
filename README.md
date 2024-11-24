@@ -1,93 +1,84 @@
-<h3 align="center">Travel agency</h3>
-
+# Travel Booking App
 <div align="center">
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
 </div>
 
----
+## About <a name = "about"></a>
 
-<p align="center"> Travel agency web app using python and django
-    <br>
-</p>
+This is a Django-based tour and travel application used for booking hotels, flights, and tours. It uses Django as the backend framework and Django REST framework (DRF) for building API functionalities.
 
-## 📝 Table of Contents
+## Project Status
 
-- [About](#about)
-- [Getting Started](#getting_started)
-- [Deployment](#deployment)
-- [Usage](#usage)
-- [Built Using](#built_using)
-- [TODO](../TODO.md)
-- [Contributing](../CONTRIBUTING.md)
-- [Authors](#authors)
-- [Acknowledgments](#acknowledgement)
+This project is currently a work in progress and may lack some essential features. Future updates are planned to enhance functionality and address existing limitations. Contributions and suggestions are welcome!
 
-## 🧐 About <a name = "about"></a>
 
-Write about 1-2 paragraphs describing the purpose of your project.
+## Getting Started <a name = "getting_started"></a>
+- Clone the repository to your local machine:
+    ```
+    git clone https://github.com/alireza-v/travel_agency.git
+    ```
 
-## 🏁 Getting Started <a name = "getting_started"></a>
+- Create and activate the virtual environemnt:
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
+    On windows:
+    ```
+    python -m venv venv
+    .\env\Scripts\activate
+    ```
 
-### Prerequisites
+    On macOS/Linux:
+    ```
+    python3 -m venv venv
+    source venv/bin/activate
+    ```
 
-What things you need to install the software and how to install them.
+- Install dependencies
+    ```
+    pip install requirements.txt
+    ```
 
+- Set up environment variable:
+    ```
+    user= your-database-user
+    name= your-database-name
+    password= your-database-password
+    email_host_user= your_email_host_user
+    email_host_password= your_email_host_user
+    ```
+
+- Set up the database:
+    ```
+    python manage.py makemigrations
+    python manage.py migrate
+    ```
+
+- Run the development server:
+    ```
+    python manage.py runserver
+    ```
+
+##  Running the tests <a name = "tests"></a> (Optional)
+
+To run the tests and ensure everything is working as expected, use either of the following commands.
+
+Display more detailed test information:
 ```
-Give examples
+pytest -v
 ```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running.
-
-Say what the step will be
-
+Stop at the first caught error:
 ```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo.
-
-## 🔧 Running the tests <a name = "tests"></a>
-
-Explain how to run the automated tests for this system.
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
+pytest --maxfail=1
 ```
 
-## 🎈 Usage <a name="usage"></a>
+## Dependencies
+The full list of dependencies can be found in the [requirements.txt](requirements.txt) file.
 
-Add notes about how to use the system.
+Some key libraries:
 
-## 🚀 Deployment <a name = "deployment"></a>
+[![Django](https://img.shields.io/badge/Django-4.2-brightgreen)](https://docs.djangoproject.com/en/4.2/)
 
-Add additional notes about how to deploy this on a live system.
+[![DRF](https://img.shields.io/badge/DRF-3.15.2-blue)](https://www.django-rest-framework.org/)
 
-## ⛏️ Built Using <a name = "built_using"></a>
-
-- Postgresql- Database
-- Django v4.2 - Server Framework
-- Django Rest Framework - Rest API
+[![Djoser](https://img.shields.io/badge/Djoser-2.3.1-blue)](https://djoser.readthedocs.io/)

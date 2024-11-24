@@ -14,9 +14,11 @@ faker = Faker()
 
 @pytest.fixture
 def user(db):
+    email = "test@email.com"
+    password = "1234QWqw"
     return User.objects.create_user(
-        email=faker.email(),
-        password=faker.password(),
+        email=email,
+        password=password,
     )
 
 
@@ -26,44 +28,41 @@ def client(db):
 
 
 @pytest.mark.django_db
-class TestUsersModels:
-    """Test suite for users app models"""
+class TestUserModel:
+    """Test suite for user models"""
 
     def testProfile(self, user):
-        """Test Profile model"""
         assert user.email
+        assert user.password
 
 
-@pytest.mark.django_db
-class TestUsersViews:
-    """Test suite for users app views"""
+# @pytest.mark.django_db
+# class TestUsersViews:
+#     """Test suite for user views"""
 
-    @pytest.fixture
-    def testRegister(self, db, client, user):
-        """Test GET/POST registraton using using email and password"""
-        url = reverse("register")
-        respGet = client.get(url)
-        respPost = client.post(
-            url,
-            data={
-                "email": user.email,
-                "password": user.password,
-            },
-        )
+#     @pytest.fixture
+#     def testRegister(self, db, client, user):
+#         """Test GET/POST registraton using using email and password"""
+#         url = reverse("auth/register")
+#         resp = client.post(
+#             url,
+#             data={
+#                 "email": user.email,
+#                 "password": user.password,
+#             },
+#         )
+#         assert resp.status_code == 201
 
-        assert respGet.status_code == 200
-        assert respPost.status_code == 201
+#     @pytest.fixture
+#     def testLogin(self, client, user):
+#         """Test login or register using email and password and receiving accesss/refresh JWT token"""
+#         url = reverse("access-token")
+#         resp = client.post(
+#             url,
+#             {
+#                 "email": user.email,
+#                 "password": user.password,
+#             },
+#         )
 
-    @pytest.fixture
-    def testLogin(self, client, user):
-        """Test login or register using email and password and receiving accesss/refresh JWT token"""
-        url = reverse("login")
-        resp = client.post(
-            url,
-            {
-                "email": user.email,
-                "password": user.password,
-            },
-        )
-
-        assert resp.status_code == 201
+#         assert resp.status_code == 200

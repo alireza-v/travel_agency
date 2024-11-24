@@ -12,15 +12,16 @@ from .models import *
 @pytest.fixture
 def jwt(db, client, user):
     """Retrive access/refresh token by validating email and password"""
-    url = reverse("login")
+    url = reverse("jwt:jwt-create")
     resp = client.post(
         url,
         data={
             "email": user.email,
-            "password": user.password,
+            "password": "1234QWqw",
         },
     )
     tokens = resp.json()
+
     return (tokens["access"], tokens["refresh"])
 
 
@@ -64,15 +65,15 @@ def tour(db, user):
 @pytest.fixture
 def tourTicket(db, tour):
     """Create Ticket instance for testing"""
-    # content_type = ContentType.objects.get_for_model(Tour)
+
     return TourTicket.objects.create(
         tour=tour,
     )
 
 
 @pytest.mark.django_db
-class TestTicketsModels:
-    """Tests suite for tickets app models"""
+class TestTicketModels:
+    """Tests suite for ticket models"""
 
     # def testHotel(self, hotel):
     #     assert hotel.enter
@@ -95,25 +96,27 @@ class TestTicketsModels:
     #     assert plane.origin
     #     assert plane.destination
 
-    def testTourTicket(self, tour):
-        assert tour.user
-        assert tour.image
-        assert tour.info
-        assert tour.origin
-        assert tour.destination
-        assert tour.rest_place
-        assert tour.start_date
-        assert tour.end_date
-        assert tour.agency
-        assert tour.price
+    def testTourTicket(self, tourTicket):
+        assert tourTicket.tour.user
+        assert tourTicket.tour.image
+        assert tourTicket.tour.info
+        assert tourTicket.tour.origin
+        assert tourTicket.tour.destination
+        assert tourTicket.tour.rest_place
+        assert tourTicket.tour.start_date
+        assert tourTicket.tour.end_date
+        assert tourTicket.tour.agency
+        assert tourTicket.tour.price
+
+    def testTourFavorite(self, tourFavorite):
+        assert tourFavorite.favorite.agency
 
 
 @pytest.mark.django_db
-class TestTicketsViews:
+class TestTicketViews:
     """Tests suite for tickets app views"""
 
     def testTourList(self, client):
-        """Test list Tour instance"""
         url = reverse("tour-list")
         resp = client.get(url)
         assert resp.status_code == 200
@@ -153,6 +156,8 @@ class TestTicketsViews:
 
     def testTourTicketList(self, client, jwt):
         access, refresh = jwt
+        print("access ", access)
+        print("refresh ", refresh)
         client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
         url = reverse("tour-ticket-list-create")
         resp = client.get(url)
@@ -170,18 +175,10 @@ class TestTicketsViews:
         )
         assert resp.status_code == 201
 
-    # def testTourCreate(self, user, tour, client, jwt):
-    #     access, refresh = jwt
-    #     url = reverse("tour-list-create")
-    #     client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
-    #     resp = client.post(
-    #         url,
-    #         data={
-    #             "user": user.email,
-    #             "origin": tour.origin,
-    #             "destination": tour.destination,
-    #             "start_date": "1403-02-04",
-    #             "end_date": "1403-02-06",
-    #         },
-    #     )
-    #     assert resp.status_code == 201
+    def testTourHistory(self, client, jwt):
+        access, refresh = jwt
+        client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
+        url = reverse("tour-history")
+        resp = client.get(url)
+
+        assert resp.status_code == 200
