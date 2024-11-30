@@ -48,14 +48,14 @@ INSTALLED_APPS = [
     # third party
     "rest_framework",
     "djoser",
-    # "restframework_simplejwt",
     "pytest_django",
     "django_jalali",
     "drf_spectacular",
     "simple_history",
-    # internal apps
+    # internal
     "users",
     "tickets",
+    "trips",
 ]
 
 AUTH_USER_MODEL = "users.Profile"
@@ -72,12 +72,15 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL": "auth/password/reset/confirm/{uid}/{token}/",
     "ACTIVATION_URL": "activate/{uid}/{token}/",
     "SEND_ACTIVATION_EMAIL": True,
+    "SERIALIZERS": {
+        "current_user": "users.serializers.CustomUserSer",
+    },
 }
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(weeks=1),  # For testing purposes
-    "REFRESH_TOKEN_LIFETIME": timedelta(weeks=2),  # For testing purposes
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
 }
@@ -104,8 +107,10 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # simple-history
+    # simple_history
     "simple_history.middleware.HistoryRequestMiddleware",
+    # admin_interface
+    "django.middleware.locale.LocaleMiddleware",
 ]
 
 ROOT_URLCONF = "src.urls"
@@ -167,6 +172,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
+
 TIME_ZONE = "UTC"
 
 USE_I18N = True
@@ -179,17 +185,17 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = "587"
-EMAIL_HOST_USER = config("email_host_user")
-EMAIL_HOST_PASSWORD = config("email_host_password")
+EMAIL_HOST_USER = config("email_host_user", default=None, cast=str)
+EMAIL_HOST_PASSWORD = config("email_host_password", default=None, cast=str)
 EMAIL_USE_TLS = True

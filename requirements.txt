@@ -17,4 +17,5 @@ ruff
 Faker
 Pillow
 requests
+bs4
 cryptography

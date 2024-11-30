@@ -6,7 +6,7 @@ venv
 .env
 
 # database migration
-*/migrations
+migrations/
 
 # python bytecode files
 __pycache/

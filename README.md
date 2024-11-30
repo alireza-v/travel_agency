@@ -9,11 +9,6 @@
 
 This is a Django-based tour and travel application used for booking hotels, flights, and tours. It uses Django as the backend framework and Django REST framework (DRF) for building API functionalities.
 
-## Project Status
-
-This project is currently a work in progress and may lack some essential features. Future updates are planned to enhance functionality and address existing limitations. Contributions and suggestions are welcome!
-
-
 ## Getting Started <a name = "getting_started"></a>
 - Clone the repository to your local machine:
     ```
@@ -36,7 +31,7 @@ This project is currently a work in progress and may lack some essential feature
 
 - Install dependencies
     ```
-    pip install requirements.txt
+    pip install -r requirements.txt
     ```
 
 - Set up environment variable:
@@ -59,21 +54,10 @@ This project is currently a work in progress and may lack some essential feature
     python manage.py runserver
     ```
 
-##  Running the tests <a name = "tests"></a> (Optional)
 
-To run the tests and ensure everything is working as expected, use either of the following commands.
-
-Display more detailed test information:
-```
-pytest -v
-```
-Stop at the first caught error:
-```
-pytest --maxfail=1
-```
 
 ## Dependencies
-The full list of dependencies can be found in the [requirements.txt](requirements.txt) file.
+The full list of dependencies can be found in the [requirements](requirements.txt) file.
 
 Some key libraries:
 

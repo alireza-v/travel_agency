@@ -20,15 +20,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.generic import RedirectView
-from drf_spectacular.views import (
-    SpectacularAPIView,
-    SpectacularRedocView,
-    SpectacularSwaggerView,
-)
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view
-from rest_framework import permissions
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from tickets.views import *
 from users.views import *
@@ -39,15 +31,6 @@ handler_404 = "users.views.handler400"
 urlpatterns = [
     # admin
     path("admin/", admin.site.urls),
-    # djoser auth
-    re_path(r"^auth/", include("djoser.urls")),
-    re_path(r"^auth/", include(("djoser.urls.jwt", "jwt"), namespace="jwt")),
-    path(
-        "auth/password/reset/confirm/<uidb64>/<token>/",
-        custom_password_reset_confirm,
-        name="password_reset_confirm",
-    ),
-    path("activate/<uid>/<token>/", activate_user, name="activate_user"),
     # Redirection
     path("", RedirectView.as_view(url="swagger/")),
     # drf-spectacular
@@ -55,10 +38,25 @@ urlpatterns = [
     path(
         "swagger/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"
     ),
-    # users
-    path("user/", include("users.urls")),
-    # tickets
-    path("ticket/", include("tickets.urls")),
+    # djoser
+    re_path(r"^auth/", include("djoser.urls")),
+    re_path(r"^auth/", include(("djoser.urls.jwt", "jwt"), namespace="jwt")),
+    path(
+        "auth/password/reset/confirm/<uidb64>/<token>/",
+        custom_password_reset_confirm,
+        name="password_reset_confirm",
+    ),
+    path("activate/<uid>/<token>/", activate_user, name="activate-user"),
+    # users app
+    path("users/", include("users.urls")),
+    # tickets app
+    path("", include("tickets.urls")),
+    # trips app
+    path("", include("trips.urls")),
+]
+
+urlpatterns += [
+    path("i18n/", include("django.conf.urls.i18n")),
 ]
 
 if settings.DEBUG:
