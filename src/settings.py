@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     "django_jalali",
     "drf_spectacular",
     "simple_history",
-    # internal
+    # internal apps
     "users",
     "tickets",
     "trips",
@@ -199,11 +199,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 if DEBUG:
-    EMAIL_BACKEND="django.core.mail.backends.console.EmailBackend"
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 else:
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
     EMAIL_HOST = "smtp.gmail.com"
-    EMAIL_PORT = config("EMAIL_PORT",default="587",cast=str)
+    EMAIL_PORT = config("EMAIL_PORT", default="587", cast=str)
     EMAIL_HOST_USER = config("EMAIL_HOST_USER", default=None, cast=str)
     EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default=None, cast=str)
     EMAIL_USE_TLS = True

@@ -11,12 +11,10 @@ User = get_user_model()
 
 
 def handler404(request, exception=None):
-    """404 Response"""
     return JsonResponse(dict(message="Not found"), status=400)
 
 
 def activate_user(request, uid, token):
-    """Activate user email address"""
     try:
         uid = decode_uid(uid)
         user = User.objects.get(pk=uid)

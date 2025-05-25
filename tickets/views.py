@@ -22,6 +22,10 @@ class TourReserveListCreateAPI(generics.ListCreateAPIView):
     serializer_class = TourReserveSer
 
     def perform_create(self, serializer):
+        """
+        Ensures that the user who sent the request is associated with the newly created `TourReserve`.
+        """
+
         serializer.save(user=self.request.user)
 
 

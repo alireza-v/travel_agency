@@ -1,7 +1,6 @@
 from typing import Any
 
 from django.utils.dateformat import format
-from django_jalali.serializers.serializerfield import JDateField, JDateTimeField
 from rest_framework import serializers
 
 from trips.serializers import *

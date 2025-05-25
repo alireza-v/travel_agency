@@ -22,10 +22,6 @@ class TourSer(serializers.ModelSerializer):
             "arrival_time",
             "agency",
             "price",
-            # "destination",
-            # "origin",
-            # "user",
-            # "slug",
         ]
 
     def get_duration(self, obj: Any) -> str:
