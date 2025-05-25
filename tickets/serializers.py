@@ -34,7 +34,7 @@ class TourReserveSer(serializers.ModelSerializer):
 
 class FlightTicketSer(serializers.ModelSerializer):
     user = serializers.CharField(read_only=True)
-    flight = FlightSer
+    flight = FlightSerializer
 
     class Meta:
         model = FlightTicket
@@ -43,7 +43,7 @@ class FlightTicketSer(serializers.ModelSerializer):
 
 class HotelReserveSer(serializers.ModelSerializer):
     user = serializers.CharField(read_only=True)
-    hotel = HotelSer
+    hotel = HotelSerializer
 
     class Meta:
         model = HotelReserve
