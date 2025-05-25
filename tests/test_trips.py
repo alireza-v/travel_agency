@@ -31,7 +31,7 @@ class TestTripsModels(BaseTest):
         assert self.hotel.departure_time
         assert (
             str(self.hotel)
-            == f"{self.hotel.arrival_time}-> {self.hotel.departure_time }"
+            == f"{self.hotel.arrival_time}-> {self.hotel.departure_time}"
         )
 
 

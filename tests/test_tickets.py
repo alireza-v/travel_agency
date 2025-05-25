@@ -1,7 +1,6 @@
 from .conftest import *
 
 
-
 @pytest.mark.django_db
 class TestTicketsModels(BaseTest):
     """
@@ -14,12 +13,18 @@ class TestTicketsModels(BaseTest):
     def test_tour_reservation(self):
         assert self.tour_reservation.user
         assert self.tour_reservation.tour
-        assert str(self.tour_reservation) == f"{self.tour.origin}-> {self.tour.destination}"
+        assert (
+            str(self.tour_reservation)
+            == f"{self.tour.origin}-> {self.tour.destination}"
+        )
 
     def test_flight_ticket(self):
         assert self.flight_ticket.user
         assert self.flight_ticket.flight
-        assert str(self.flight_ticket) == f"{self.flight.origin}-> {self.flight.destination}"
+        assert (
+            str(self.flight_ticket)
+            == f"{self.flight.origin}-> {self.flight.destination}"
+        )
 
     def test_hotel_reservation(self):
         assert self.hotel_reservation.user

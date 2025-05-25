@@ -19,3 +19,5 @@ Pillow
 requests
 bs4
 cryptography
+gunicorn
+dj-database-url

@@ -19,3 +19,6 @@ __pycache/
 db.sqlite3
 /static/
 media/
+
+
+/docs/
