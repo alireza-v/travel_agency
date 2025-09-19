@@ -2,7 +2,7 @@ from typing import Any
 
 from rest_framework import serializers
 
-from .models import *
+from trips.models import Flight, Hotel, Tour
 
 
 class TourSerializer(serializers.ModelSerializer):

@@ -3,8 +3,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from simple_history.models import HistoricalRecords
 
-from trips.models import Flight,Tour,Hotel
-from users.models import *
+from trips.models import Flight, Hotel, Tour
+from users.models import BaseModel
 
 User = get_user_model()
 

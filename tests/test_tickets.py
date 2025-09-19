@@ -1,4 +1,7 @@
-from .conftest import *
+import pytest
+from django.urls import reverse
+
+from conftest import BaseTest
 
 
 @pytest.mark.django_db

@@ -1,11 +1,7 @@
-from typing import Any
-
-from django.utils.dateformat import format
 from rest_framework import serializers
 
-from trips.serializers import *
-
-from .models import *
+from tickets.models import FlightTicket, HotelReserve, TourReserve
+from trips.serializers import FlightSerializer, HotelSerializer
 
 
 class HistorySer(serializers.Serializer):

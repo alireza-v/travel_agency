@@ -15,7 +15,9 @@ from datetime import timedelta
 from pathlib import Path
 
 import dj_database_url
-from decouple import config
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,15 +27,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY", default=None, cast=str)
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", default=True, cast=bool)
+DEBUG = os.getenv("DEBUG", "True").lower() in ("true", "1", "yes")
 
 if DEBUG:
     ALLOWED_HOSTS = ["*"]
 else:
-    ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="").split(",")
+    ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
 
 # Application definition
@@ -149,9 +151,7 @@ if DEBUG:
         },
     }
 else:
-    DATABASES = {
-        "default": dj_database_url.parse(config("DATABASE_URL", default=None, cast=str))
-    }
+    DATABASES = {"default": dj_database_url.parse(os.getenv("DATABASE_URL"))}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -188,10 +188,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -203,7 +204,7 @@ if DEBUG:
 else:
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
     EMAIL_HOST = "smtp.gmail.com"
-    EMAIL_PORT = config("EMAIL_PORT", default="587", cast=str)
-    EMAIL_HOST_USER = config("EMAIL_HOST_USER", default=None, cast=str)
-    EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default=None, cast=str)
+    EMAIL_PORT = os.getenv("EMAIL_PORT", 587)
+    EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
     EMAIL_USE_TLS = True

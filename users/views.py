@@ -1,11 +1,9 @@
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render
 from django.utils.http import urlsafe_base64_decode
 from djoser.utils import decode_uid
-
-from .serializers import *
 
 User = get_user_model()
 

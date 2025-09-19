@@ -5,8 +5,7 @@ from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from simple_history.models import HistoricalRecords
 
-from tickets.models import *
-from users.models import *
+from tickets.models import BaseModel
 
 User = get_user_model()
 

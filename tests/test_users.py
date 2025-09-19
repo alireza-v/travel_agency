@@ -1,4 +1,6 @@
-from .conftest import *
+import pytest
+
+from conftest import BaseTest
 
 
 @pytest.mark.django_db

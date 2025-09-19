@@ -1,3 +1,6 @@
 [tool.isort]
-skip=["env"]
+skip=["env","migrations","__pycache__"]
+skip_gitignore=true
 
+[tool.ruff]
+exclude=["env","migrations","__pycache__"]

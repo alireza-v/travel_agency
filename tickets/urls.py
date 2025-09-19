@@ -1,6 +1,16 @@
 from django.urls import path
 
-from .views import *
+from tickets.views import (
+    FlightTicketHistoryAPI,
+    FlightTicketListCreateAPI,
+    FlightTicketRetrieveDestroyAPI,
+    HotelReserveHistoryAPI,
+    HotelReserveListCreateAPI,
+    HotelReserveRetrieveDestroyAPI,
+    TourReserveHistoryAPI,
+    TourReserveListCreateAPI,
+    TourReserveRetrieveDestroyAPI,
+)
 
 urlpatterns = [
     path("tour-reserve/", TourReserveListCreateAPI.as_view(), name="tour_reserve"),

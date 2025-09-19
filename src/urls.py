@@ -22,8 +22,7 @@ from django.urls import include, path, re_path
 from django.views.generic import RedirectView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-from tickets.views import *
-from users.views import *
+from users.views import activate_user, custom_password_reset_confirm
 
 handler_404 = "users.views.handler400"
 
@@ -47,11 +46,7 @@ urlpatterns = [
         name="password_reset_confirm",
     ),
     path("activate/<uid>/<token>/", activate_user, name="activate-user"),
-    # users app
-    path("users/", include("users.urls")),
-    # tickets app
     path("", include("tickets.urls")),
-    # trips app
     path("", include("trips.urls")),
 ]
 

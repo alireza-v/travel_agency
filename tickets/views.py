@@ -1,14 +1,14 @@
-from django.db.models import F, Q
-from django.shortcuts import get_object_or_404, render
+from django.db.models import F
 from drf_spectacular.utils import extend_schema
+from rest_framework import generics, permissions
 
-# Create your views here.
-from rest_framework import filters, generics, permissions
-
-from trips.serializers import *
-
-from .models import *
-from .serializers import *
+from tickets.models import FlightTicket, HotelReserve, TourReserve
+from tickets.serializers import (
+    FlightTicketSer,
+    HistorySer,
+    HotelReserveSer,
+    TourReserveSer,
+)
 
 
 @extend_schema(

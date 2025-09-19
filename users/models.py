@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 
-from .managers import *
+from users.managers import ProfileManager
 
 
 class BaseModel(models.Model):

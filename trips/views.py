@@ -1,10 +1,9 @@
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
-
-# Create your views here.
 from rest_framework import filters, generics, permissions
 
-from .serializers import *
+from trips.models import Flight, Hotel, Tour
+from trips.serializers import FlightSerializer, HotelSerializer, TourSerializer
 
 
 @extend_schema(summary="Tours", responses={200: TourSerializer(many=True)})

@@ -6,8 +6,7 @@ from django.urls import reverse
 from faker import Faker
 from rest_framework.test import APIClient
 
-from tickets.models import *
-from trips.models import *
+from tickets.models import Flight, FlightTicket, Hotel, HotelReserve, Tour, TourReserve
 
 User = get_user_model()
 faker = Faker()
